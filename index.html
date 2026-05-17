@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="심플하고 모던한 TaskFlow To-Do List 웹앱 - 일정을 스마트하게 관리하세요.">
+    <title>TaskFlow - 모던 To-Do List</title>
+    <!-- Google Fonts: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Main Style Sheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="bg-gradient-decoration"></div>
+    <div class="bg-gradient-decoration-2"></div>
+
+    <main class="app-container">
+        <!-- Header Section -->
+        <header class="app-header">
+            <div class="logo-area">
+                <span class="logo-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>
+                </span>
+                <h1 class="app-title">TaskFlow</h1>
+            </div>
+            
+            <!-- Dark Mode Toggle Button -->
+            <button id="theme-toggle" class="theme-toggle-btn" aria-label="테마 전환" title="다크/라이트 모드 전환">
+                <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+                <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+            </button>
+        </header>
+
+        <!-- Todo Input Form -->
+        <form id="todo-form" class="todo-input-container">
+            <input type="text" id="todo-input" class="todo-input" placeholder="오늘 할 일을 입력하세요..." required autocomplete="off" maxlength="100">
+            <button type="submit" id="todo-add-btn" class="todo-add-btn" aria-label="할 일 추가">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                <span>추가</span>
+            </button>
+        </form>
+
+        <!-- Todo Statistics & Filters -->
+        <section class="todo-meta">
+            <div class="todo-stats">
+                <span id="completed-count">0</span> / <span id="total-count">0</span> 완료됨
+            </div>
+            <div class="todo-filters">
+                <button type="button" class="filter-btn active" data-filter="all">전체</button>
+                <button type="button" class="filter-btn" data-filter="active">진행중</button>
+                <button type="button" class="filter-btn" data-filter="completed">완료</button>
+            </div>
+        </section>
+
+        <!-- Todo List Container -->
+        <section class="todo-list-section">
+            <ul id="todo-list" class="todo-list">
+                <!-- Dynamic Items will be rendered here -->
+            </ul>
+            
+            <!-- Empty State -->
+            <div id="empty-state" class="empty-state">
+                <div class="empty-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+                </div>
+                <p class="empty-text">등록된 할 일이 없습니다.</p>
+                <p class="empty-subtext">새로운 할 일을 추가하고 일정을 관리해보세요!</p>
+            </div>
+        </section>
+        
+        <!-- Clear Completed Button -->
+        <footer class="app-footer">
+            <button id="clear-completed" class="clear-completed-btn">완료 항목 삭제</button>
+        </footer>
+    </main>
+
+    <!-- Main JavaScript Sheet -->
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,666 @@
+/* ==========================================================================
+   TaskFlow Design System & Reset
+   ========================================================================== */
+
+:root {
+    /* Font family */
+    --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    
+    /* Core Light Theme (Default) */
+    --primary-hsl: 250, 85%, 60%;
+    --primary: hsl(var(--primary-hsl));
+    --primary-hover: hsl(250, 85%, 52%);
+    --primary-light: hsl(250, 85%, 95%);
+    --accent-hsl: 320, 85%, 60%;
+    --accent: hsl(var(--accent-hsl));
+    
+    --bg-body: #f3f4f6;
+    --bg-card: rgba(255, 255, 255, 0.75);
+    --bg-input: rgba(255, 255, 255, 0.9);
+    --border-color: rgba(255, 255, 255, 0.6);
+    
+    --text-main: #1f2937;
+    --text-muted: #6b7280;
+    --text-completed: #9ca3af;
+    
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+    --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 20px 50px rgba(31, 38, 135, 0.07);
+    
+    --radius-sm: 10px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    
+    --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Floating blobs light */
+    --blob-1: rgba(139, 92, 246, 0.15);
+    --blob-2: rgba(236, 72, 153, 0.15);
+}
+
+/* Dark Theme Variables */
+[data-theme="dark"] {
+    --bg-body: #0b0f19;
+    --bg-card: rgba(17, 24, 39, 0.7);
+    --bg-input: rgba(31, 41, 55, 0.6);
+    --border-color: rgba(255, 255, 255, 0.08);
+    
+    --text-main: #f3f4f6;
+    --text-muted: #9ca3af;
+    --text-completed: #4b5563;
+    
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
+    --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.5);
+
+    --primary-light: hsl(250, 85%, 15%);
+    
+    /* Floating blobs dark */
+    --blob-1: rgba(139, 92, 246, 0.25);
+    --blob-2: rgba(236, 72, 153, 0.2);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    font-family: var(--font-sans);
+    background-color: var(--bg-body);
+    color: var(--text-main);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    overflow-x: hidden;
+    position: relative;
+    transition: background-color var(--transition-normal), color var(--transition-normal);
+}
+
+/* ==========================================================================
+   Decorative Background Blobs
+   ========================================================================== */
+
+.bg-gradient-decoration,
+.bg-gradient-decoration-2 {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    z-index: -1;
+    pointer-events: none;
+    transition: background-color var(--transition-slow);
+}
+
+.bg-gradient-decoration {
+    width: 350px;
+    height: 350px;
+    top: -50px;
+    right: -50px;
+    background-color: var(--blob-1);
+    animation: floatBlob1 15s ease-in-out infinite alternate;
+}
+
+.bg-gradient-decoration-2 {
+    width: 400px;
+    height: 400px;
+    bottom: -100px;
+    left: -100px;
+    background-color: var(--blob-2);
+    animation: floatBlob2 18s ease-in-out infinite alternate;
+}
+
+@keyframes floatBlob1 {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(-30px, 40px) scale(1.1); }
+}
+
+@keyframes floatBlob2 {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(40px, -30px) scale(1.15); }
+}
+
+/* ==========================================================================
+   App Container (Glassmorphism Card)
+   ========================================================================== */
+
+.app-container {
+    width: 100%;
+    max-width: 540px;
+    background: var(--bg-card);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    transition: background var(--transition-normal), border-color var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+/* ==========================================================================
+   Header Section
+   ========================================================================== */
+
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 20px;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: var(--radius-sm);
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: white;
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+}
+
+.app-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Theme Toggle Button */
+.theme-toggle-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 1px solid var(--border-color);
+    background: var(--bg-input);
+    color: var(--text-main);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-fast);
+    position: relative;
+    overflow: hidden;
+}
+
+.theme-toggle-btn:hover {
+    transform: scale(1.05);
+    background-color: var(--primary-light);
+    color: var(--primary);
+    border-color: var(--primary);
+}
+
+.theme-toggle-btn:active {
+    transform: scale(0.95);
+}
+
+/* Sun/Moon Transitions */
+.theme-toggle-btn .sun-icon {
+    position: absolute;
+    transition: transform var(--transition-normal) ease, opacity var(--transition-normal);
+    opacity: 1;
+    transform: rotate(0) scale(1);
+}
+
+.theme-toggle-btn .moon-icon {
+    position: absolute;
+    transition: transform var(--transition-normal) ease, opacity var(--transition-normal);
+    opacity: 0;
+    transform: rotate(90deg) scale(0.5);
+}
+
+[data-theme="dark"] .theme-toggle-btn .sun-icon {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.5);
+}
+
+[data-theme="dark"] .theme-toggle-btn .moon-icon {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+}
+
+/* ==========================================================================
+   Input Section
+   ========================================================================== */
+
+.todo-input-container {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+}
+
+.todo-input {
+    flex: 1;
+    padding: 14px 20px;
+    border-radius: var(--radius-md);
+    border: 1.5px solid var(--border-color);
+    background: var(--bg-input);
+    color: var(--text-main);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    font-weight: 400;
+    outline: none;
+    transition: all var(--transition-fast);
+}
+
+.todo-input::placeholder {
+    color: var(--text-muted);
+    opacity: 0.7;
+}
+
+.todo-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.15);
+    background: var(--bg-input);
+}
+
+.todo-add-btn {
+    padding: 14px 24px;
+    border-radius: var(--radius-md);
+    border: none;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: white;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.2);
+    transition: all var(--transition-fast);
+}
+
+.todo-add-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(139, 92, 246, 0.3);
+    filter: brightness(1.05);
+}
+
+.todo-add-btn:active {
+    transform: translateY(0);
+}
+
+/* ==========================================================================
+   Meta / Filter Section
+   ========================================================================== */
+
+.todo-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 16px;
+    gap: 12px;
+}
+
+.todo-stats {
+    font-weight: 600;
+}
+
+.todo-stats span {
+    color: var(--text-main);
+}
+
+.todo-filters {
+    display: flex;
+    gap: 4px;
+    background: var(--bg-input);
+    padding: 4px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-color);
+}
+
+.filter-btn {
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: calc(var(--radius-sm) - 2px);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.filter-btn:hover {
+    color: var(--text-main);
+}
+
+.filter-btn.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 2px 8px rgba(139, 92, 246, 0.2);
+}
+
+/* ==========================================================================
+   Todo List & Empty State
+   ========================================================================== */
+
+.todo-list-section {
+    min-height: 200px;
+    position: relative;
+}
+
+.todo-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 380px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+/* Custom Scrollbar for list */
+.todo-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.todo-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.todo-list::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 3px;
+}
+
+.todo-list::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+}
+
+/* Todo Item Styling */
+.todo-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--bg-input);
+    border: 1px solid var(--border-color);
+    padding: 14px 18px;
+    border-radius: var(--radius-md);
+    transition: all var(--transition-fast);
+    animation: fadeInSlide var(--transition-normal) forwards;
+}
+
+.todo-item:hover {
+    transform: translateX(4px);
+    border-color: var(--primary);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Checkbox and Text Container */
+.todo-content-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    cursor: pointer;
+}
+
+/* Hide original checkbox */
+.todo-checkbox {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+/* Custom styled Checkbox Circle */
+.todo-custom-check {
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--text-muted);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+    flex-shrink: 0;
+    color: white;
+}
+
+.todo-custom-check svg {
+    opacity: 0;
+    transform: scale(0.6);
+    transition: all var(--transition-fast);
+}
+
+/* Hover Checkbox effects */
+.todo-content-wrapper:hover .todo-custom-check {
+    border-color: var(--primary);
+    background-color: var(--primary-light);
+}
+
+/* Checked states */
+.todo-item.completed {
+    background: rgba(var(--primary-hsl), 0.03);
+}
+
+.todo-item.completed .todo-custom-check {
+    border-color: var(--primary);
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+}
+
+.todo-item.completed .todo-custom-check svg {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Todo Text styling */
+.todo-text {
+    font-size: 0.95rem;
+    font-weight: 500;
+    line-height: 1.4;
+    word-break: break-all;
+    transition: all var(--transition-fast);
+    color: var(--text-main);
+}
+
+.todo-item.completed .todo-text {
+    color: var(--text-completed);
+    text-decoration: line-through;
+}
+
+/* Delete Button Styling */
+.todo-delete-btn {
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+    margin-left: 8px;
+}
+
+.todo-delete-btn:hover {
+    color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
+    transform: scale(1.1);
+}
+
+.todo-delete-btn:active {
+    transform: scale(0.9);
+}
+
+/* Empty State Styling */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-muted);
+    transition: all var(--transition-normal);
+}
+
+.empty-icon {
+    margin-bottom: 16px;
+    color: var(--text-muted);
+    opacity: 0.5;
+    animation: pulseIcon 3s infinite ease-in-out;
+}
+
+.empty-text {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-main);
+    margin-bottom: 6px;
+}
+
+.empty-subtext {
+    font-size: 0.85rem;
+    max-width: 250px;
+    line-height: 1.4;
+}
+
+/* Animations */
+@keyframes fadeInSlide {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOutSlide {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-12px);
+    }
+}
+
+@keyframes pulseIcon {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.05); opacity: 0.8; }
+}
+
+/* Leaving class for slide transition */
+.todo-item.leaving {
+    animation: fadeOutSlide var(--transition-normal) forwards;
+}
+
+/* ==========================================================================
+   Footer Section
+   ========================================================================== */
+
+.app-footer {
+    display: flex;
+    justify-content: flex-end;
+    border-top: 1px solid var(--border-color);
+    padding-top: 16px;
+}
+
+.clear-completed-btn {
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
+    transition: all var(--transition-fast);
+}
+
+.clear-completed-btn:hover {
+    color: #ef4444;
+    background: rgba(239, 68, 68, 0.05);
+}
+
+.clear-completed-btn:active {
+    transform: scale(0.98);
+}
+
+/* ==========================================================================
+   Responsive Media Queries
+   ========================================================================== */
+
+@media (max-width: 480px) {
+    body {
+        padding: 12px;
+    }
+    
+    .app-container {
+        padding: 24px 20px;
+        gap: 20px;
+        border-radius: var(--radius-md);
+    }
+    
+    .app-title {
+        font-size: 1.3rem;
+    }
+    
+    .todo-input-container {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .todo-add-btn {
+        width: 100%;
+        justify-content: center;
+        padding: 12px;
+    }
+    
+    .todo-input {
+        padding: 12px 16px;
+    }
+    
+    .todo-meta {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+    
+    .todo-filters {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .filter-btn {
+        flex: 1;
+        text-align: center;
+        padding: 8px;
+    }
+}
